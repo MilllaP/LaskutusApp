@@ -1,0 +1,159 @@
+﻿<Window x:Class="LaskutusApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:LaskutusApp.Models"
+        mc:Ignorable="d"
+        Title="LaskutusApp" Height="600" MinHeight="600" Width="800" MinWidth="700">
+    <Window.DataContext>
+        <local:Bill></local:Bill>
+    </Window.DataContext>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <!--Valikkorivi-->
+        <Menu Grid.Row="0">
+            <MenuItem Header="Valikko" Height="25">
+                <MenuItem Header="Info..." Click="Info_Click"/>
+            </MenuItem>
+            <MenuItem Header="Lasku">
+                <MenuItem Header="Lisää lasku..." Click="AddBill_Click"/>
+                <MenuItem Header="Päivitä laskua..." Click="UpdateBill_Click" />
+            </MenuItem>
+            <MenuItem Header="Asiakas">
+                <MenuItem Header="Hae asiakkaan laskut..." Click="GetCustomer_Click"/>
+                <MenuItem Header="Lisää uusi asiakas..." Click="AddCustomer_Click"/>
+                <MenuItem Header="Päivitä asiakastietoja..." Click="UpdateCustomer_Click" />
+            </MenuItem>
+            <MenuItem Header="Tuotteet">
+                <MenuItem Header="Lisää tuote.." Click="AddProduct_Click"/>
+                <MenuItem Header="Päivitä tuotetietoja.." Click="UpdateProducts_Click"/>
+            </MenuItem>
+        </Menu>
+
+        <!--Lasku-->
+        <TabControl Grid.Row="2" Margin="0,5,0,0" >     <!--Laskut, Tuotteet, Asiakkaat-->
+            <TabItem Header="Laskut">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="50"/>    <!--Laskujen selaus-->
+                        <RowDefinition Height="3*"/>    <!--Laskurivi; laskuttaja ja laskun tiedot-->
+                        <RowDefinition Height="3*"/>    <!--Asiakastiedot-->
+                        <RowDefinition Height="4*"/>    <!--Tuotelista-->
+                        <RowDefinition Height="40"/>    <!--Laskun summa-->
+                    </Grid.RowDefinitions>
+
+                    <!--Laskujen selaus näppäimet, laskut haetaan allbills listasta-->
+                    <ToolBar Grid.Row="0" Background="Gainsboro">
+                        <Button Click="RemoveBill_Click" Margin="6,0,3,0" Width="50" Height="44" Padding="2,-10,2,2">
+                            <Image Source="/trash_icon.png" Height="40" Opacity="0.8"/>
+                        </Button>
+                        <Button Click="SearchBill_Click" Margin="3,0,3,0" Width="50" Height="43" Padding="2,-10,2,2">
+                            <Image Source="/magnifying-glass_icon.png" Height="39" Opacity="0.65"/>
+                        </Button>
+                        <Separator Margin="5,0,5,0" Height="25"/>
+                        <Button Click="ToFirstBill" Content="&lt;&lt;" Margin="3,0,3,0" Width="60" Height="40"/>
+                        <Button Click="PreviousBill" Content="&lt;" Margin="3,0,3,0" Width="60" Height="40"/>
+                        <Separator Margin="5,0,5,0" Height="25"/>
+                        <Button Click="NextBill" Content="&gt;" Margin="3,0,3,0"  Width="60" Height="40"/>
+                        <Button Click="ToLastBill" Content="&gt;&gt;" Margin="3,0,3,0"  Width="60" Height="40"/>
+                    </ToolBar>
+
+                    <Grid VerticalAlignment="Top" Grid.Row="1" Margin="0,0,10,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+
+                        <!--Laskuttajan ja laskutiedot-->
+                        <StackPanel Grid.Column="0" Margin="30,20,50,0">
+                            <Label Content="Lasku" FontWeight="Bold" FontSize="14" Height="25"></Label>
+                            <Label Content="Laskuttaja:" Margin="15,0,0,0" Height="25"></Label>
+                            <Label Content="{Binding CompanyName}" Margin="15,-8,0,0" Height="25"></Label>
+                            <Label Content="{Binding ComStreetAddress}" Margin="15,-8,0,0" Height="25"></Label>
+                            <StackPanel Orientation="Horizontal">
+                                <Label Content="{Binding ComPostalCode}" Margin="15,-8,0,0" Height="25"></Label>
+                                <Label Content="{Binding ComCity}" Margin="0,-8,0,0" Height="25"></Label>
+                            </StackPanel>
+                        </StackPanel>
+                        <StackPanel Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Bottom" Orientation="Vertical" Margin="0,0,30,0">
+                            <StackPanel Orientation="Horizontal">
+                                <Label Content="Päiväys:"/>
+                                <TextBox Text="{Binding Date}" IsReadOnly="True" TextWrapping="Wrap" BorderBrush="White" VerticalContentAlignment="Center"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,-8,0,0">
+                                <Label Content="Laskun numero:"/>
+                                <TextBox Text="{Binding BillID}" IsReadOnly="True" TextWrapping="Wrap" BorderBrush="White" VerticalContentAlignment="Center"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,-8,0,0">
+                                <Label Content="Eräpäivä:"/>
+                                <TextBox Text="{Binding DueDate}" IsReadOnly="True" TextWrapping="Wrap" BorderBrush="White" VerticalContentAlignment="Center"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Grid>
+
+                    <!--Asiakastiedot-->
+                    <GroupBox Grid.Row="2" Margin="30,0,30,0" Header="Asiakas" Background="#FFF4F4F4">
+                        <StackPanel Margin="0,10,0,0">
+                            <TextBox Text="{Binding Name}" IsReadOnly="True" TextWrapping="Wrap" BorderBrush="#FFF4F4F4" Background="#FFF4F4F4" Margin="15,0,0,0"/>
+                            <TextBox Text="{Binding StreetAddress}" IsReadOnly="True" TextWrapping="Wrap" BorderBrush="#FFF4F4F4" Background="#FFF4F4F4" Margin="15,0,0,0"/>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBox Text="{Binding PostalCode}" IsReadOnly="True" TextWrapping="Wrap" BorderBrush="#FFF4F4F4" Background="#FFF4F4F4" Margin="15,0,0,0"/>
+                                <TextBox Text="{Binding City}" IsReadOnly="True" TextWrapping="Wrap" BorderBrush="#FFF4F4F4" Background="#FFF4F4F4" Margin="5,0,0,0"/>
+                            </StackPanel>
+                            <TextBox Text="{Binding Information}" IsReadOnly="True" TextWrapping="Wrap" BorderBrush="#FFF4F4F4" Background="#FFF4F4F4" Margin="15,10,0,5"/>
+                        </StackPanel>
+                    </GroupBox>
+
+                    <!--Tuotetiedot ja yhteensä summa-->
+                    <DataGrid Grid.Row="3" Margin="30,10,30,10" ItemsSource="{Binding InvoiceLines}" AutoGenerateColumns="False" IsReadOnly="True">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Tuote" IsReadOnly="True" Width="2*" Binding="{Binding ProductName}"/>
+                            <DataGridTextColumn Header="Määrä" Width="2*" Binding="{Binding Amount}"/>
+                            <DataGridTextColumn Header="Yksikkö" IsReadOnly="True" Width="2*" Binding="{Binding Unit}"/>
+                            <DataGridTextColumn Header="A-hinta" IsReadOnly="True" Width="2*" Binding="{Binding Price}"/>
+                            <DataGridTextColumn Header="Yhteensä" IsReadOnly="True" Width="2*" Binding="{Binding FullPrice}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <StackPanel Grid.Row="4" Orientation="Horizontal" FlowDirection="RightToLeft" Margin="10,0,50,0">
+                        <TextBox IsReadOnly="True" Text="{Binding InTotal}" TextWrapping="Wrap" BorderBrush="White" Width="100" FontSize="16"/>
+                        <Label Content="YHTEENSÄ" Margin="30,0,0,0"/>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+
+            <!--Tuotteiden lista, tiedot haetaan allproducts listasta-->
+            <TabItem Header="Tuotteet">
+                <Grid>
+                    <DataGrid x:Name="ProductList" IsReadOnly="True" FontSize="14" AutoGenerateColumns="False">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Tuotetunnus" Binding="{Binding ProductID}" Width="2*"/>
+                            <DataGridTextColumn Header="Tuote" Binding="{Binding ProductName}" Width="2*"/>
+                            <DataGridTextColumn Header="Yksikkö" Binding="{Binding Unit}" Width="2*"/>
+                            <DataGridTextColumn Header="A-hinta" Binding="{Binding Price}" Width="2*"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </TabItem>
+
+            <!--Asiakkaiden lista, tiedot haetaan allcustomers listasta-->
+            <TabItem Header="Asiakkaat">
+                <Grid>
+                    <DataGrid x:Name="CustomerList" IsReadOnly="True" FontSize="14" AutoGenerateColumns="False">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Asiakastunnus" Binding="{Binding Id}" Width="2*"/>
+                            <DataGridTextColumn Header="Nimi" Binding="{Binding Name}" Width="2*"/>
+                            <DataGridTextColumn Header="Katuosoite" Binding="{Binding StreetAddress}" Width="2*"/>
+                            <DataGridTextColumn Header="Postinumero" Binding="{Binding PostalCode}" Width="2*"/>
+                            <DataGridTextColumn Header="Kaupunki" Binding="{Binding City}" Width="2*"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>

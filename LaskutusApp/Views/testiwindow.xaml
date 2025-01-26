@@ -1,0 +1,19 @@
+﻿<Window x:Class="LaskutusApp.testiwindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:LaskutusApp.Models"
+        mc:Ignorable="d"
+        Title="testiwindow" Height="450" Width="800">
+    <Grid>
+        <DataGrid x:Name="ProductList" IsReadOnly="True" FontSize="14" AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Tuotetunnus" Binding="{Binding ProductID}" Width="2*"/>
+                <DataGridTextColumn Header="Tuote" Binding="{Binding ProductName}" Width="2*"/>
+                <DataGridTextColumn Header="Yksikkö" Binding="{Binding Unit}" Width="2*"/>
+                <DataGridTextColumn Header="A-hinta" Binding="{Binding Price}" Width="2*"/>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</Window>

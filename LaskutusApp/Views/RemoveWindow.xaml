@@ -1,0 +1,20 @@
+﻿<Window x:Class="LaskutusApp.RemoveWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:LaskutusApp.Models"
+        mc:Ignorable="d"
+        Title="Poista lasku" Height="150" Width="400" WindowStyle="None" ResizeMode="NoResize">
+    <Window.DataContext>
+        <local:Bill></local:Bill>
+    </Window.DataContext>
+    <Border BorderBrush="#FF4B4B4B" BorderThickness="1">
+        <Canvas> <!--Annettu tunnus tunnistetaan Bill BillID-->
+            <Label Content="Laskunumero:" Canvas.Left="51" Canvas.Top="20" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+            <TextBox x:Name="textboxId" Text="{Binding BillID}" PreviewTextInput="NumberValidationTextBox" TextWrapping="Wrap" Height="25" Width="300" Canvas.Left="51" Canvas.Top="50" VerticalContentAlignment="Center"/>
+            <Button Content="Peruuta" Height="30" Width="100" Canvas.Left="250" Canvas.Top="90" HorizontalAlignment="Left" VerticalAlignment="Top" Click="CancelButton" />
+            <Button Content="Poista" Canvas.Left="51" Canvas.Top="90" Height="30" Width="100" HorizontalAlignment="Center" VerticalAlignment="Top" Click="RemoveButton"/>
+        </Canvas>
+    </Border>
+</Window>

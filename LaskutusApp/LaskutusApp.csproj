@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="magnifying-glass-icon.png" />
+    <None Remove="magnifying-glass_icon.png" />
+    <None Remove="trash-logo.png" />
+    <None Remove="trash_icon.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MySqlConnector" Version="2.2.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\magnifying-glass_icon.png" />
+    <Resource Include="Resources\trash_icon.png" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,57 @@
+﻿<Window x:Class="LaskutusApp.UpdateProductWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:LaskutusApp.Models"
+        mc:Ignorable="d"
+        Title="Päivitä tuotteita" Height="350" Width="400" ResizeMode="NoResize">
+    <Window.DataContext>
+        <local:Product/>
+    </Window.DataContext>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="35"/>
+            <RowDefinition/>
+            <RowDefinition Height="60"/>
+        </Grid.RowDefinitions>
+        
+        <!--Tuotteen valitseminene-->
+        <Label x:Name="LabelChoose" Content="Valitse tuote:" VerticalAlignment="Bottom" Margin="30,0,0,0"/>
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
+            <ComboBox x:Name="comProducts" DisplayMemberPath="ProductName" Margin="20,5,20,5" Width="200"/>
+            <Button x:Name="SelectButton" Content="Valitse" Width="100" Margin="10,5,20,5" Click="Select_Button"/>
+        </StackPanel>
+        
+        <!--Tietojen päivitys piiloitettu kunnes, tuote on valittu-->
+        <Grid Grid.Row="2" Margin="30,30,30,0" Visibility="Collapsed" x:Name="ProductRow">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="120"/>
+                <ColumnDefinition Width="200"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+            </Grid.RowDefinitions>
+
+            <Label Grid.Column="0" Content="Tuotenumero" Height="25" HorizontalAlignment="Left"/>
+            <Label Grid.Column="1" Content="{Binding ProductID}" Height="25"/>
+            <Label Grid.Column="0" Grid.Row="1" Content="Tuote" Height="25"/>
+            <Label Grid.Column="1" Grid.Row="1" Content="{Binding ProductName}" Height="25"/>
+            <Label Grid.Column="0" Grid.Row="2" Content="Ykskkö" Height="25"/>
+            <Label Grid.Column="1" Grid.Row="2" Content="{Binding Unit}" Height="25"/>
+            <Label Grid.Column="0" Grid.Row="3" Content="A-hinta" Height="25"/>
+            <TextBox Grid.Column="1" Grid.Row="3" PreviewTextInput="FloatValidationTextBox" Text="{Binding Price}" Height="25"/>
+        </Grid>
+        
+        <!--Valintanapit-->
+        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center">
+            <Button Content="Päivitä" IsEnabled="False" x:Name="UpdateButton" Width="100" Margin="0,0,20,30" Click="Update_Button"/>
+            <Button Content="Poista" IsEnabled="False" x:Name="DeleteButton" Width="100" Margin="0,0,20,30" Click="Delete_Button"/>
+            <Button Content="Peruuta" IsEnabled="False" x:Name="CancelButton" Width="100" Margin="0,0,0,30" Click="Cancel_Button"/>
+        </StackPanel>
+    </Grid>
+</Window>
